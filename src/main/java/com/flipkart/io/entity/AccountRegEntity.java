@@ -1,13 +1,13 @@
 package com.flipkart.io.entity;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity(name="users")
+@Table(name="users")
 public class AccountRegEntity implements Serializable {
 
 	/**
@@ -17,7 +17,8 @@ public class AccountRegEntity implements Serializable {
 	
 	@Id
 	@GeneratedValue
-	public int id=102;
+	@Column(name="id")
+	public int id;
 	
 	@Column(nullable=false)
 	public String password;
@@ -28,6 +29,20 @@ public class AccountRegEntity implements Serializable {
 	@Column(nullable=false)
 	public String email;
 	
+	@OneToMany(
+	        mappedBy = "userENtity",
+	        cascade = CascadeType.ALL)
+	private List<UserRoles> roles;
+	
+	public AccountRegEntity(AccountRegEntity users) {
+		this.id = users.getId();
+		this.password = users.getPassword();
+		this.confirm_password = users.getConfirm_password();
+		this.email = users.getEmail();
+	}
+	public AccountRegEntity() {
+		
+	}
 	public int getId() {
 		return id;
 	}
@@ -51,5 +66,11 @@ public class AccountRegEntity implements Serializable {
 	}
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	public List<UserRoles> getRoles() {
+		return roles;
+	}
+	public void setRoles(List<UserRoles> roles) {
+		this.roles = roles;
 	}
 }

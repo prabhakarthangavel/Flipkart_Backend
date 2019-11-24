@@ -43,21 +43,21 @@ public class ServiceImpl implements FlipkartService {
 	@Autowired
 	Utilities utils;
 
-	@Override
-	public AccountRegDto Login(AccountRegDto dto) {
-		AccountRegDto DTO = new AccountRegDto();
-		AccountRegEntity entity = new AccountRegEntity();
-		BeanUtils.copyProperties(dto, entity);
-		AccountRegEntity reqEntity = accRepo.findByemail(dto.getEmail());
-		if (dto.getEmail() == null || dto.getPassword() == null) {
-			dto.setStatus("All the fields are mandatory");
-		} else if (reqEntity == null) {
-			dto.setStatus("Invalid username or password");
-		} else if (dto.getPassword().equalsIgnoreCase(reqEntity.getPassword())) {
-			dto.setStatus("Login Sucessfull");
-		}
-		return dto;
-	}
+//	@Override
+//	public AccountRegDto Login(AccountRegDto dto) {
+//		AccountRegDto DTO = new AccountRegDto();
+//		AccountRegEntity entity = new AccountRegEntity();
+//		BeanUtils.copyProperties(dto, entity);
+//		AccountRegEntity reqEntity = accRepo.findByemail(dto.getEmail());
+//		if (dto.getEmail() == null || dto.getPassword() == null) {
+//			dto.setStatus("All the fields are mandatory");
+//		} else if (reqEntity == null) {
+//			dto.setStatus("Invalid username or password");
+//		} else if (dto.getPassword().equalsIgnoreCase(reqEntity.getPassword())) {
+//			dto.setStatus("Login Sucessfull");
+//		}
+//		return dto;
+//	}
 
 	@Override
 	public AccountRegDto Register(AccountRegDto details) {
