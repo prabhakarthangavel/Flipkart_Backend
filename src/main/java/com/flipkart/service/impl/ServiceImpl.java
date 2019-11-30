@@ -2,8 +2,6 @@ package com.flipkart.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.*;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -22,7 +20,6 @@ import com.flipkart.repo.MensAccsProduct;
 import com.flipkart.service.FlipkartService;
 import com.flipkart.shared.dto.AccountRegDto;
 import com.flipkart.shared.dto.ClothDto;
-import com.flipkart.shared.dto.ClothSize;
 import com.flipkart.shared.dto.ProductsDto;
 import com.flipkart.utils.Utilities;
 
@@ -36,7 +33,7 @@ public class ServiceImpl implements FlipkartService {
 
 	@Autowired
 	Clothing clothRepo;
-	
+
 	@Autowired
 	ClothSizeRepo clothsizeRepo;
 
@@ -59,30 +56,26 @@ public class ServiceImpl implements FlipkartService {
 //		return dto;
 //	}
 
-	@Override
-	public AccountRegDto Register(AccountRegDto details) {
-		AccountRegDto dtoValue = new AccountRegDto();
-		AccountRegEntity entity = new AccountRegEntity();
-		BeanUtils.copyProperties(details, entity);
-		if (details.getEmail() == null) {
-			dtoValue.setStatus("Email Id is mandatory");
-		} else if (accRepo.findByemail(details.getEmail()) != null) {
-			dtoValue.setStatus("Email already used");
-		} else if (details.getPassword() == null) {
-			dtoValue.setStatus("Password is Mandatory");
-		} else if (details.getConfirm_password() == null) {
-			dtoValue.setStatus("Confirm Password is Mandatory");
-		} else if (utils.checkString(details.getPassword()) == false) {
-			dtoValue.setStatus(
-					"Password should contain at least an uppercase and a lowercase character, a number and a special character");
-		} else if (details.getPassword().equalsIgnoreCase(details.getConfirm_password()) == false) {
-			dtoValue.setStatus("Password and Confirm Password are not matching");
-		} else if (accRepo.save(entity) != null) {
-			System.out.println("idValue" + entity.getId());
-			dtoValue.setStatus("Sucess");
-		}
-		return dtoValue;
-	}
+//	@Override
+//	public AccountRegDto Register(AccountRegDto details) {
+//		AccountRegDto dtoValue = new AccountRegDto();
+//		AccountRegEntity entity = new AccountRegEntity();
+//		BeanUtils.copyProperties(details, entity);
+//		if (details.getUsername() == null) {
+//			dtoValue.setStatus("Username is mandatory");
+//		} else if (accRepo.findByusername(details.getUsername()) != null) {
+//			dtoValue.setStatus("Username already used");
+//		} else if (details.getPassword() == null) {
+//			dtoValue.setStatus("Password is Mandatory");
+//		} else if (utils.checkString(details.getPassword()) == false) {
+//			dtoValue.setStatus(
+//					"Password should contain at least an uppercase and a lowercase character, a number and a special character");
+//		} else if (accRepo.save(entity) != null) {
+//			System.out.println("idValue" + entity.getId());
+//			dtoValue.setStatus("Sucess");
+//		}
+//		return dtoValue;
+//	}
 
 	@Override
 	public List<ProductsDto> MensAccProduct() {
@@ -98,63 +91,69 @@ public class ServiceImpl implements FlipkartService {
 
 	@Override
 	public List<ClothDto> Clothing(String category, String size) {
-		if(category == null && size == null) {
+		if (category == null && size == null) {
 			Iterable<ClothEntity> entity = clothRepo.findAll();
 			ModelMapper mapper = new ModelMapper();
-			java.lang.reflect.Type targetListType = new TypeToken<List<ClothDto>>() {}.getType();
+			java.lang.reflect.Type targetListType = new TypeToken<List<ClothDto>>() {
+			}.getType();
 			List<ClothDto> dto = mapper.map(entity, targetListType);
 			return dto;
-		} else if (category != null && size == null){
+		} else if (category != null && size == null) {
 			Iterable<ClothEntity> entity = clothRepo.findCategory(category);
 			ModelMapper mapper = new ModelMapper();
-			java.lang.reflect.Type targetListType = new TypeToken<List<ClothDto>>() {}.getType();
+			java.lang.reflect.Type targetListType = new TypeToken<List<ClothDto>>() {
+			}.getType();
 			List<ClothDto> dto = mapper.map(entity, targetListType);
 			return dto;
 		} else if (category == null && size != null) {
-			if(size.equalsIgnoreCase("Small")) {
+			if (size.equalsIgnoreCase("Small")) {
 				Iterable<ClothSizeEntity> sizeEntity = clothsizeRepo.findSmallSize("true");
 				ModelMapper mapper = new ModelMapper();
-				java.lang.reflect.Type targetListType = new TypeToken<List<ClothDto>>() {}.getType();
+				java.lang.reflect.Type targetListType = new TypeToken<List<ClothDto>>() {
+				}.getType();
 				List<ClothDto> dto = mapper.map(sizeEntity, targetListType);
 				return dto;
-			}else if(size.equalsIgnoreCase("Medium")) {
+			} else if (size.equalsIgnoreCase("Medium")) {
 				Iterable<ClothSizeEntity> sizeEntity = clothsizeRepo.findMediumSize("true");
 				ModelMapper mapper = new ModelMapper();
-				java.lang.reflect.Type targetListType = new TypeToken<List<ClothDto>>() {}.getType();
+				java.lang.reflect.Type targetListType = new TypeToken<List<ClothDto>>() {
+				}.getType();
 				List<ClothDto> dto = mapper.map(sizeEntity, targetListType);
 				return dto;
-			}else if(size.equalsIgnoreCase("Large")) {
+			} else if (size.equalsIgnoreCase("Large")) {
 				Iterable<ClothSizeEntity> sizeEntity = clothsizeRepo.findLargeSize("true");
 				ModelMapper mapper = new ModelMapper();
-				java.lang.reflect.Type targetListType = new TypeToken<List<ClothDto>>() {}.getType();
+				java.lang.reflect.Type targetListType = new TypeToken<List<ClothDto>>() {
+				}.getType();
 				List<ClothDto> dto = mapper.map(sizeEntity, targetListType);
 				return dto;
 			}
 		} else {
 			Iterable<ClothEntity> entity = clothRepo.findCategory(category);
 			List<ClothEntity> returnEntity = new ArrayList<ClothEntity>();
-			if(size.equalsIgnoreCase("Small")) {
-				for(ClothEntity source:entity) {
-					if(source.getClothSize().isSmall()) {
+			if (size.equalsIgnoreCase("Small")) {
+				for (ClothEntity source : entity) {
+					if (source.getClothSize().isSmall()) {
 						returnEntity.add(source);
 					}
 				}
-			
-			}else if(size.equalsIgnoreCase("Medium")) {
-				for(ClothEntity source:entity) {
-					if(source.getClothSize().isMedium()) {
+
+			} else if (size.equalsIgnoreCase("Medium")) {
+				for (ClothEntity source : entity) {
+					if (source.getClothSize().isMedium()) {
 						returnEntity.add(source);
 					}
 				}
-			}else if(size.equalsIgnoreCase("Large")) {
-				for(ClothEntity source:entity) {
-					if(source.getClothSize().isLarge()) {
+			} else if (size.equalsIgnoreCase("Large")) {
+				for (ClothEntity source : entity) {
+					if (source.getClothSize().isLarge()) {
 						returnEntity.add(source);
 					}
 				}
 			}
 			ModelMapper mapper = new ModelMapper();
-			java.lang.reflect.Type targetListType = new TypeToken<List<ClothDto>>() {}.getType();
+			java.lang.reflect.Type targetListType = new TypeToken<List<ClothDto>>() {
+			}.getType();
 			List<ClothDto> dto = mapper.map(returnEntity, targetListType);
 			return dto;
 		}
@@ -167,7 +166,7 @@ public class ServiceImpl implements FlipkartService {
 		System.out.println(a);
 		ClothEntity entity = clothRepo.findName(a);
 		ModelMapper mapper = new ModelMapper();
-		ClothDto dto = mapper.map(entity,ClothDto.class);
+		ClothDto dto = mapper.map(entity, ClothDto.class);
 		return dto;
 	}
 

@@ -24,10 +24,7 @@ public class AccountRegEntity implements Serializable {
 	public String password;
 	
 	@Column(nullable=false)
-	public String confirm_password;
-	
-	@Column(nullable=false)
-	public String email;
+	public String username;
 	
 	@OneToMany(
 	        mappedBy = "userENtity",
@@ -37,8 +34,7 @@ public class AccountRegEntity implements Serializable {
 	public AccountRegEntity(AccountRegEntity users) {
 		this.id = users.getId();
 		this.password = users.getPassword();
-		this.confirm_password = users.getConfirm_password();
-		this.email = users.getEmail();
+		this.username = users.getUsername();
 	}
 	public AccountRegEntity() {
 		
@@ -55,17 +51,11 @@ public class AccountRegEntity implements Serializable {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public String getConfirm_password() {
-		return confirm_password;
+	public String getUsername() {
+		return username;
 	}
-	public void setConfirm_password(String confirm_password) {
-		this.confirm_password = confirm_password;
-	}
-	public String getEmail() {
-		return email;
-	}
-	public void setEmail(String email) {
-		this.email = email;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 	public List<UserRoles> getRoles() {
 		return roles;

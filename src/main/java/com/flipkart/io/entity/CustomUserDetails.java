@@ -31,7 +31,7 @@ public class CustomUserDetails extends AccountRegEntity implements UserDetails {
 
 	@Override
 	public String getUsername() {
-		return super.getEmail();
+		return super.getUsername();
 	}
 
 	@Override

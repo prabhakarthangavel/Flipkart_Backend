@@ -1,15 +1,15 @@
 package com.flipkart.ui.model.request;
 
 public class LoginRequest {
-	String email;
+	String username;
 	String password;
 
 	public String getName() {
-		return email;
+		return username;
 	}
 
-	public void setName(String email) {
-		this.email = email;
+	public void setName(String username) {
+		this.username = username;
 	}
 
 	public String getPassword() {

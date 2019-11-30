@@ -10,5 +10,5 @@ import com.flipkart.io.entity.AccountRegEntity;
 @Repository
 public interface AccReg extends JpaRepository<AccountRegEntity, Integer> {
 
-	Optional<AccountRegEntity> findByemail(String email);
+	AccountRegEntity findByusername(String username);
 }
