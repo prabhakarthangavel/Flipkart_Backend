@@ -1,13 +1,7 @@
 package com.flipkart.ui.model.response;
 
-import java.io.Serializable;
+public class ClothSize {
 
-public class ClothSize implements Serializable {
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 4479974141430000041L;
 	private int cloth_id;
 	private boolean small;
 	private boolean medium;

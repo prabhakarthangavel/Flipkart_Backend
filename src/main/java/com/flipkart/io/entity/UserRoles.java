@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -14,24 +15,25 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-@Entity(name="user_role")
+@Entity
 @Table(name="user_role")
 public class UserRoles implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue
-	@Column(name="id")
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "role_id")
     private int id;
     
-    @Column
+    @Column(name = "role")
     private String role;
+ 
     
-    @ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="id",insertable = false, updatable = false)
-    private AccountRegEntity userENtity;
-	
+    @ManyToOne(	 cascade = CascadeType.ALL)
+	@JoinColumn(name="user_id")
+    private AccountRegEntity userENtity;  
+
 	public AccountRegEntity getUserENtity() {
 		return userENtity;
 	}
@@ -40,16 +42,16 @@ public class UserRoles implements Serializable {
 		this.userENtity = userENtity;
 	}
 
-//	public int getUser_id() {
-//		return id;
-//	}
-//
-//	public void setUser_id(int id) {
-//		this.id = id;
-//	}
-
 	public String getRole() {
 		return role;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public void setRole(String role) {
