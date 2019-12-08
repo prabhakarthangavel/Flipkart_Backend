@@ -3,6 +3,7 @@ package com.flipkart.ui.controller;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import com.flipkart.service.impl.JwtUserDetailsService;
 import com.flipkart.shared.dto.AccountRegDto;
+import com.flipkart.shared.dto.RoleDto;
 import com.flipkart.config.JwtTokenUtil;
 import com.flipkart.io.entity.AccountRegEntity;
 import com.flipkart.io.entity.UserRoles;
@@ -65,15 +67,21 @@ public class JwtAuthenticationController {
 		return ResponseEntity.ok(response);
 	}
 	
-//	@GetMapping("/user")
-//	public ResponseEntity<AccountRegResponse> getUser(){
-//		AccountRegDto returnDto = userDetailsService.findUser("prabhas");
-//		AccountRegResponse response = new AccountRegResponse();
-//		BeanUtils.copyProperties(returnDto,response);
-//		return ResponseEntity.ok(response);
-//	}
+	@GetMapping("/user")
+	public ResponseEntity<AccountRegResponse> getUser(){
+		AccountRegDto returnDto = userDetailsService.findUser("prabhas3");
+		AccountRegResponse response = new AccountRegResponse();
+		//This mapper is used to map this list of object into another list
+		ModelMapper mapper = new ModelMapper();
+		java.lang.reflect.Type targetListType = new TypeToken<List<UserRole>>() {
+		}.getType();
+		List<UserRole> roleResponse = mapper.map(returnDto.getRole(), targetListType);
+		response.setUsername(returnDto.getUsername());
+		response.setRole(roleResponse);
+		return ResponseEntity.ok(response);
+	}
 	
-	@GetMapping(value = "/user")
+//	@GetMapping(value = "/user")
 	public boolean update() {
 
 		AccountRegEntity users = new AccountRegEntity();

@@ -1,7 +1,11 @@
 package com.flipkart.service.impl;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
@@ -14,9 +18,12 @@ import org.springframework.security.core.userdetails.User;
 
 import com.flipkart.io.entity.AccountRegEntity;
 import com.flipkart.io.entity.CustomUserDetails;
+import com.flipkart.io.entity.UserRoles;
 import com.flipkart.repo.AccReg;
 import com.flipkart.utils.Utilities;
 import com.flipkart.shared.dto.AccountRegDto;
+import com.flipkart.shared.dto.ClothDto;
+import com.flipkart.shared.dto.RoleDto;
 
 @Service
 public class JwtUserDetailsService implements UserDetailsService {
@@ -42,11 +49,16 @@ public class JwtUserDetailsService implements UserDetailsService {
 	}
 	
 	public AccountRegDto findUser(String username) {
-		AccountRegDto dto = new AccountRegDto();
 		AccountRegEntity entity = repo.findByusername(username);
-		BeanUtils.copyProperties(entity, dto);
-		System.out.println("entity"+entity.getUsername()+dto.getRole());
-		System.out.println("roles"+entity.getRoles());
+		AccountRegDto dto = new AccountRegDto();
+		ModelMapper mapper = new ModelMapper();
+		
+		//This mapper is used to map this list of object into another list
+		java.lang.reflect.Type targetListType = new TypeToken<List<RoleDto>>() {
+		}.getType();
+		List<RoleDto> roleDto = mapper.map(entity.getRoles(), targetListType);
+		dto.setUsername(entity.getUsername());
+		dto.setRole(roleDto);
 		return dto;
 	}
 
